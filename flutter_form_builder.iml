@@ -23,6 +23,9 @@
       <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/com/example/example/packages" />
       <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/com/example/packages" />
       <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/com/packages" />
+      <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/io/flutter/packages" />
+      <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/io/flutter/plugins/packages" />
+      <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/io/packages" />
       <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/java/packages" />
       <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/packages" />
       <excludeFolder url="file://$MODULE_DIR$/example/android/app/src/main/res/drawable/packages" />
