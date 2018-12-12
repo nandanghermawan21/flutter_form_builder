@@ -243,9 +243,9 @@ class _FormBuilderState extends State<FormBuilder> {
                   items: formControls[count].options.map((option) {
                     return DropdownMenuItem(
                       child: new Theme(
-                        data: Theme.of(context).copyWith(
-                                canvasColor: Colors.blue.shade200,
-                              ),
+                        data: new ThemeData(
+                          canvasColor: Colors.blueAccent
+                        ),
                         child: Text("${option.label ?? option.value}",overflow: TextOverflow.ellipsis),
                       ),
                       value: option.value,
