@@ -228,7 +228,6 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
-                
                 decoration: InputDecoration(
                   labelText: formControl.label,
                   helperText: formControl.hint,
@@ -236,28 +235,26 @@ class _FormBuilderState extends State<FormBuilder> {
                   contentPadding: formControl.controllPadding,
                   border: InputBorder.none,
                 ),
-                child: DropdownButton(
-                  isExpanded: true,
-                  hint: Text(formControl.hint ?? ''),
-                  style: formControl.textStyle,
-                  items: formControls[count].options.map((option) {
-                    return DropdownMenuItem(
-                      child: new Theme(
-                        data: new ThemeData(
-                          canvasColor: Colors.blueAccent
-                        ),
-                        child: Text("${option.label ?? option.value}",overflow: TextOverflow.ellipsis),
-                      ),
-                      value: option.value,
-                    );
-                  }).toList(),
-                  value: field.value,
-                  onChanged: (value) {
-                    setState(() {
-                      formControls[count].value = value;
-                    });
-                    field.didChange(value);
-                  },
+                child: new Theme(
+                  data: ThemeData(canvasColor: Colors.red),
+                  child: DropdownButton(
+                    isExpanded: true,
+                    hint: Text(formControl.hint ?? ''),
+                    style: formControl.textStyle,
+                    items: formControls[count].options.map((option) {
+                      return DropdownMenuItem(
+                        child: Text("${option.label ?? option.value}"),
+                        value: option.value,
+                      );
+                    }).toList(),
+                    value: field.value,
+                    onChanged: (value) {
+                      setState(() {
+                        formControls[count].value = value;
+                      });
+                      field.didChange(value);
+                    },
+                  ),
                 ),
               );
             },
