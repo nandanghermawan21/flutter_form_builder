@@ -238,6 +238,9 @@ class _FormBuilderState extends State<FormBuilder> {
                   prefixStyle: TextStyle(
                     color: Colors.red
                   ),
+                  hintStyle: TextStyle(
+                    color: Colors.red
+                  ),
                 ),
                 child: DropdownButton(
                   isExpanded: true,
