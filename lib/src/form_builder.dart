@@ -233,7 +233,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   labelText: formControl.label,
                   helperText: formControl.hint,
                   errorText: field.errorText,
-                  contentPadding: formControl.controllPadding,
+                  contentPadding: formControl.controllPadding ?? EdgeInsets.only(top: 10.0, bottom: 0.0),
                   border: InputBorder.none,
                 ),
                 child: DropdownButton(
