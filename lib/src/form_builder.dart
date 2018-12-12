@@ -235,31 +235,13 @@ class _FormBuilderState extends State<FormBuilder> {
                   errorText: field.errorText,
                   contentPadding: formControl.controllPadding,
                   border: InputBorder.none,
-                  prefixStyle: TextStyle(
-                    color: Colors.red
-                  ),
-                  helperStyle: TextStyle(
-                    color: Colors.red
-                  ),
-                  hintStyle: TextStyle(
-                    color: Colors.red
-                  ), 
-                  suffixStyle: TextStyle(
-                    color: Colors.red
-                  ),
-                  errorStyle: TextStyle(
-                    color: Colors.red
-                  ),
-                  counterStyle: TextStyle(
-                    color: Colors.red
-                  ),
-                  labelStyle: TextStyle(
-                    color: Colors.red
-                  ),
                 ),
                 child: DropdownButton(
                   isExpanded: true,
                   hint: Text(formControl.hint ?? ''),
+                  style: TextStyle(
+                    color: Colors.red
+                  ),
                   items: formControls[count].options.map((option) {
                     return DropdownMenuItem(
                       child: Text("${option.label ?? option.value}"),
