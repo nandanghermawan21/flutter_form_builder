@@ -243,6 +243,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   items: formControls[count].options.map((option) {
                     return DropdownMenuItem(
                       child: Container(
+                        color: formControl.optionColor,
                         width: double.infinity,
                         decoration: formControl.optionDecoration,
                         child: Text("${option.label ?? option.value}",overflow: TextOverflow.ellipsis),
