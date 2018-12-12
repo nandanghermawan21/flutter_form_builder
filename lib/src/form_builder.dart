@@ -238,7 +238,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   prefixStyle: TextStyle(
                     color: Colors.red
                   ),
-                  hintStyle: TextStyle(
+                  helperStyle: TextStyle(
                     color: Colors.red
                   ),
                 ),
