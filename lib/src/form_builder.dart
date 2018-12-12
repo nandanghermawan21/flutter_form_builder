@@ -236,7 +236,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   border: InputBorder.none,
                 ),
                 child: new Theme(
-                  data: ThemeData(canvasColor: Colors.red),
+                  data: formControl.optionTheme,
                   child: DropdownButton(
                     isExpanded: true,
                     hint: Text(formControl.hint ?? ''),
