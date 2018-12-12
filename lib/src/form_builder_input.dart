@@ -32,7 +32,7 @@ class FormBuilderInput {
   static const String TYPE_CHIPS_INPUT = "ChipsInput";
 
   Color textColor;
-  Padding controllPadding;
+  EdgeInsetsGeometry controllPadding;
   String label;
   String attribute;
   String type;
