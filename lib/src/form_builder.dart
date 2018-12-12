@@ -228,7 +228,6 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
-                
                 decoration: InputDecoration(
                   labelText: formControl.label,
                   helperText: formControl.hint,
@@ -244,6 +243,7 @@ class _FormBuilderState extends State<FormBuilder> {
                     return DropdownMenuItem(
                       child: Container(
                         color: formControl.optionColor,
+                        height: double.infinity,
                         width: double.infinity,
                         decoration: formControl.optionDecoration,
                         child: Text("${option.label ?? option.value}",overflow: TextOverflow.ellipsis),
