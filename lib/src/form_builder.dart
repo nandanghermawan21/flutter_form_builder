@@ -239,9 +239,7 @@ class _FormBuilderState extends State<FormBuilder> {
                 child: DropdownButton(
                   isExpanded: true,
                   hint: Text(formControl.hint ?? ''),
-                  style: TextStyle(
-                    color: Colors.red
-                  ),
+                  style: formControl.textStyle,
                   items: formControls[count].options.map((option) {
                     return DropdownMenuItem(
                       child: Text("${option.label ?? option.value}"),
