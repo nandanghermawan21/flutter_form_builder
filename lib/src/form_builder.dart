@@ -228,8 +228,10 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
+                baseStyle: TextStyle(
+                  color: formControl.textColor
+                ),
                 decoration: InputDecoration(
-                  fillColor: formControl.textColor,
                   labelText: formControl.label,
                   helperText: formControl.hint,
                   errorText: field.errorText,
