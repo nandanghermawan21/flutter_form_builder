@@ -31,6 +31,7 @@ class FormBuilderInput {
   static const String TYPE_SEGMENTED_CONTROL = "SegmentedControl";
   static const String TYPE_CHIPS_INPUT = "ChipsInput";
 
+  Color optionColor;
   BoxDecoration optionDecoration;
   TextStyle textStyle;
   EdgeInsetsGeometry controllPadding;
@@ -156,6 +157,7 @@ class FormBuilderInput {
     @required this.label,
     @required this.options,
     @required this.attribute,
+    this.optionColor,
     this.optionDecoration,
     this.textStyle,
     this.controllPadding,
