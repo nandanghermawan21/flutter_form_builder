@@ -237,6 +237,9 @@ class _FormBuilderState extends State<FormBuilder> {
                   errorText: field.errorText,
                   contentPadding: formControl.controllPadding ?? EdgeInsets.only(top: 10.0, bottom: 0.0),
                   border: InputBorder.none,
+                  prefixStyle: TextStyle(
+                    color: formControl.textColor
+                  ),
                 ),
                 child: DropdownButton(
                   isExpanded: true,
