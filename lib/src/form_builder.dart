@@ -229,10 +229,11 @@ class _FormBuilderState extends State<FormBuilder> {
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
                 decoration: InputDecoration(
+                  fillColor: formControl.textColor,
                   labelText: formControl.label,
                   helperText: formControl.hint,
                   errorText: field.errorText,
-                  contentPadding: EdgeInsets.only(top: 4.0, bottom: 0.0),
+                  contentPadding: formControl.controllPadding == null ? EdgeInsets.only(top: 10.0, bottom: 0.0) : formControl.controllPadding,
                   border: InputBorder.none,
                 ),
                 child: DropdownButton(
