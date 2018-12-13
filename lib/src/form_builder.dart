@@ -10,7 +10,7 @@ import './chips_input.dart';
 //TODO: Refactor this spaghetti code
 class FormBuilder extends StatefulWidget {
   final BuildContext context;
-  final Function onChanged;
+  final VoidCallback onChanged;
   final WillPopCallback onWillPop;
   final List<FormBuilderInput> controls;
   final Function onSubmit;
@@ -64,7 +64,7 @@ class _FormBuilderState extends State<FormBuilder> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      onChanged: widget.onChanged(formData),
+      onChanged: widget.onChanged,
       //TODO: Allow user to update field value or validate based on changes in others (e.g. Summations, Confirm Password)
       onWillPop: widget.onWillPop,
       autovalidate: widget.autovalidate,
