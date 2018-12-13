@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:sy_flutter_widgets/sy_flutter_widgets.dart';
@@ -9,6 +10,7 @@ import './chips_input.dart';
 
 //TODO: Refactor this spaghetti code
 class FormBuilder extends StatefulWidget {
+  final FormInputController controller;
   final BuildContext context;
   final VoidCallback onChanged;
   final WillPopCallback onWillPop;
@@ -16,20 +18,22 @@ class FormBuilder extends StatefulWidget {
   final Function onSubmit;
   final bool autovalidate;
   final bool showResetButton;
+  final bool showSubmitButton;
   final Widget submitButtonContent;
   final Widget resetButtonContent;
 
-  const FormBuilder(
-    this.context, {
-    @required this.controls,
-    @required this.onSubmit,
-    this.onChanged,
-    this.autovalidate = false,
-    this.showResetButton = false,
-    this.onWillPop,
-    this.submitButtonContent,
-    this.resetButtonContent,
-  }) : assert(resetButtonContent == null || showResetButton);
+  const FormBuilder(this.context,
+      {@required this.controls,
+      @required this.onSubmit,
+      this.onChanged,
+      this.autovalidate = false,
+      this.showResetButton = false,
+      this.onWillPop,
+      this.submitButtonContent,
+      this.resetButtonContent,
+      this.showSubmitButton = true,
+      this.controller})
+      : assert(resetButtonContent == null || showResetButton);
 
   // assert(duplicateAttributes(controls).length == 0, "Duplicate attribute names not allowed");
 
@@ -56,6 +60,7 @@ class FormBuilder extends StatefulWidget {
 class _FormBuilderState extends State<FormBuilder> {
   final List<FormBuilderInput> formControls;
   final _formKey = GlobalKey<FormState>();
+
   Map<String, dynamic> formData = {};
 
   _FormBuilderState(this.formControls);
@@ -74,6 +79,15 @@ class _FormBuilderState extends State<FormBuilder> {
         ),
       ),
     );
+  }
+
+  void updateController() {
+    if (widget.controller != null) widget.controller.formData = formData;
+  }
+
+  void UpdateController(String attribute, dynamic value) {
+    if (widget.controller != null)
+      widget.controller.formData[attribute] = value;
   }
 
   List<Widget> formControlsToForm() {
@@ -132,6 +146,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   formControl.type == FormBuilderInput.TYPE_NUMBER
                       ? num.tryParse(value)
                       : value;
+              updateController();
             },
             validator: (value) {
               if (formControl.require && value.isEmpty)
@@ -188,29 +203,31 @@ class _FormBuilderState extends State<FormBuilder> {
           TextEditingController _typeAheadController =
               TextEditingController(text: formControl.value);
           formControlsList.add(TypeAheadFormField(
-            key: Key(formControl.attribute),
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: _typeAheadController,
-              decoration: InputDecoration(
-                labelText: formControl.label,
-                hintText: formControl.hint,
+              key: Key(formControl.attribute),
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: _typeAheadController,
+                decoration: InputDecoration(
+                  labelText: formControl.label,
+                  hintText: formControl.hint,
+                ),
               ),
-            ),
-            suggestionsCallback: formControl.suggestionsCallback,
-            itemBuilder: formControl.itemBuilder,
-            transitionBuilder: (context, suggestionsBox, controller) =>
-                suggestionsBox,
-            onSuggestionSelected: (suggestion) =>
-                _typeAheadController.value = TextEditingValue(text: suggestion),
-            validator: (value) {
-              if (formControl.require && value.isEmpty)
-                return '${formControl.label} is required';
+              suggestionsCallback: formControl.suggestionsCallback,
+              itemBuilder: formControl.itemBuilder,
+              transitionBuilder: (context, suggestionsBox, controller) =>
+                  suggestionsBox,
+              onSuggestionSelected: (suggestion) => _typeAheadController.value =
+                  TextEditingValue(text: suggestion),
+              validator: (value) {
+                if (formControl.require && value.isEmpty)
+                  return '${formControl.label} is required';
 
-              if (formControl.validator != null)
-                return formControl.validator(value);
-            },
-            onSaved: (value) => formData[formControl.attribute] = value,
-          ));
+                if (formControl.validator != null)
+                  return formControl.validator(value);
+              },
+              onSaved: (value) {
+                formData[formControl.attribute] = value;
+                updateController();
+              }));
           break;
 
         case FormBuilderInput.TYPE_DROPDOWN:
@@ -225,6 +242,7 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
@@ -236,7 +254,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   border: InputBorder.none,
                 ),
                 child: new Theme(
-                  data: formControl.optionTheme,
+                  data: formControl.optionTheme ?? ThemeData(),
                   child: DropdownButton(
                     isExpanded: true,
                     hint: Text(formControl.hint ?? ''),
@@ -249,8 +267,13 @@ class _FormBuilderState extends State<FormBuilder> {
                     }).toList(),
                     value: field.value,
                     onChanged: (value) {
+                      formData[formControl.attribute] = value;
                       setState(() {
                         formControls[count].value = value;
+                        UpdateController(formControl.attribute,value);
+                        if (formControl.controller != null)
+                          formControl.controller.text =
+                              formControls[count].value.toString();
                       });
                       field.didChange(value);
                     },
@@ -268,6 +291,7 @@ class _FormBuilderState extends State<FormBuilder> {
             initialValue: formControl.value,
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             validator: (value) {
               if (formControl.require && value == null)
@@ -292,6 +316,7 @@ class _FormBuilderState extends State<FormBuilder> {
                       onChanged: (dynamic value) {
                         setState(() {
                           formControls[count].value = value;
+                          UpdateController(formControl.attribute,value);
                         });
                         field.didChange(value);
                       },
@@ -332,6 +357,7 @@ class _FormBuilderState extends State<FormBuilder> {
             initialValue: formControl.value,
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             validator: (value) {
               if (formControl.require && value == null)
@@ -388,6 +414,7 @@ class _FormBuilderState extends State<FormBuilder> {
               },
               onSaved: (value) {
                 formData[formControl.attribute] = value;
+                updateController();
               },
               builder: (FormFieldState<dynamic> field) {
                 return InputDecorator(
@@ -409,6 +436,7 @@ class _FormBuilderState extends State<FormBuilder> {
                       onChanged: (bool value) {
                         setState(() {
                           formControls[count].value = value;
+                          UpdateController(formControl.attribute,value);
                         });
                         field.didChange(value);
                       },
@@ -437,6 +465,7 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
@@ -475,6 +504,7 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
@@ -512,6 +542,7 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
@@ -533,6 +564,7 @@ class _FormBuilderState extends State<FormBuilder> {
                     onChanged: (bool value) {
                       setState(() {
                         formControls[count].value = value;
+                        UpdateController(formControl.attribute,value);
                       });
                       field.didChange(value);
                     },
@@ -562,6 +594,7 @@ class _FormBuilderState extends State<FormBuilder> {
             },
             onSaved: (value) {
               formData[formControl.attribute] = value;
+              updateController();
             },
             builder: (FormFieldState<dynamic> field) {
               return InputDecorator(
@@ -583,6 +616,7 @@ class _FormBuilderState extends State<FormBuilder> {
                         onChanged: (double value) {
                           setState(() {
                             formControls[count].value = value.roundToDouble();
+                            UpdateController(formControl.attribute,value);
                           });
                           field.didChange(value);
                         },
@@ -609,6 +643,7 @@ class _FormBuilderState extends State<FormBuilder> {
               initialValue: formControl.value ?? [],
               onSaved: (value) {
                 formData[formControl.attribute] = value;
+                updateController();
               },
               validator: formControl.validator,
               builder: (FormFieldState<dynamic> field) {
@@ -681,6 +716,7 @@ class _FormBuilderState extends State<FormBuilder> {
               initialValue: formControl.value ?? [],
               onSaved: (value) {
                 formData[formControl.attribute] = value;
+                updateController();
               },
               validator: (value) {
                 if (formControl.require && value.length == 0)
@@ -701,6 +737,7 @@ class _FormBuilderState extends State<FormBuilder> {
                   onChanged: (data) {
                     setState(() {
                       formControls[count].value = data;
+                      UpdateController(formControl.attribute,data);
                     });
                     field.didChange(data);
                   },
@@ -731,22 +768,25 @@ class _FormBuilderState extends State<FormBuilder> {
                   ),
                 )
               : SizedBox(),
-          Expanded(
-            child: MaterialButton(
-              color: Theme.of(context).accentColor,
-              textColor: Colors.white,
-              onPressed: () {
-                _formKey.currentState.save();
-                if (_formKey.currentState.validate()) {
-                  widget.onSubmit(formData);
-                } else {
-                  debugPrint("Validation failed");
-                  widget.onSubmit(null);
-                }
-              },
-              child: widget.submitButtonContent ?? Text('Submit'),
-            ),
-          ),
+          widget.showSubmitButton
+              ? Expanded(
+                  child: MaterialButton(
+                    color: Theme.of(context).accentColor,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      _formKey.currentState.save();
+                      if (_formKey.currentState.validate()) {
+                        widget.onSubmit(formData);
+                        updateController();
+                      } else {
+                        debugPrint("Validation failed");
+                        widget.onSubmit(null);
+                      }
+                    },
+                    child: widget.submitButtonContent ?? Text('Submit'),
+                  ),
+                )
+              : SizedBox(),
         ],
       ),
     ));
@@ -795,6 +835,7 @@ class _FormBuilderState extends State<FormBuilder> {
               formControls[count].value = value;
             });
             formData[formControl.attribute] = value;
+            updateController();
           },
         ),
       ),
@@ -842,6 +883,7 @@ class _FormBuilderState extends State<FormBuilder> {
               formControls[count].value = value;
             });
             formData[formControl.attribute] = value;
+            updateController();
           },
         ),
       ),

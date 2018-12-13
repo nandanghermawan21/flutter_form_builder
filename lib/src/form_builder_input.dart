@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/src/form_input_controller.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import './form_builder_input_option.dart';
@@ -31,6 +32,7 @@ class FormBuilderInput {
   static const String TYPE_SEGMENTED_CONTROL = "SegmentedControl";
   static const String TYPE_CHIPS_INPUT = "ChipsInput";
 
+  TextEditingController controller;
   ThemeData optionTheme;
   TextStyle textStyle;
   EdgeInsetsGeometry controllPadding;
@@ -163,6 +165,7 @@ class FormBuilderInput {
     this.value,
     this.require = false,
     this.validator,
+    this.controller
   }) {
     type = FormBuilderInput.TYPE_DROPDOWN;
   }

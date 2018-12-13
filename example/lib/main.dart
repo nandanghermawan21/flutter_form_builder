@@ -288,6 +288,12 @@ class MyHomePage extends StatelessWidget {
       "Zimbabwe"
     ];
 
+    //untuk mengambil text value dari inputan (Combobox)
+    TextEditingController FleetDropdownController = new TextEditingController();
+
+    //untuk mengambil form data
+    FormInputController formInputController = new FormInputController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter FormBuilder Example'),
@@ -296,8 +302,10 @@ class MyHomePage extends StatelessWidget {
         margin: EdgeInsets.all(15.0),
         child: FormBuilder(
           context,
+          controller: formInputController,
           autovalidate: true,
-          showResetButton: true,
+          showResetButton: false,
+          showSubmitButton: false,
           // resetButtonContent: Text("Clear Form"),
           controls: [
             FormBuilderInput.typeAhead(
@@ -392,6 +400,7 @@ class MyHomePage extends StatelessWidget {
                 FormBuilderInputOption(value: "Option 2"),
                 FormBuilderInputOption(value: "Option 3"),
               ],
+              controller: FleetDropdownController
             ),
             FormBuilderInput.number(
               attribute: "age",
@@ -504,7 +513,8 @@ class MyHomePage extends StatelessWidget {
             ),
           ],
           onChanged: () {
-            print("Form value changed");
+            print("Form value dirubah");
+            print(formInputController.formData);
           },
           onSubmit: (formValue) {
             if (formValue != null) {
