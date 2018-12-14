@@ -32,7 +32,7 @@ class FormBuilderInput {
   static const String TYPE_SEGMENTED_CONTROL = "SegmentedControl";
   static const String TYPE_CHIPS_INPUT = "ChipsInput";
 
-  TextEditingController controller;
+  FormInputController controller;
   ThemeData optionTheme;
   TextStyle textStyle;
   EdgeInsetsGeometry controllPadding;

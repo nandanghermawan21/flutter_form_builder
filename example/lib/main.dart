@@ -289,10 +289,10 @@ class MyHomePage extends StatelessWidget {
     ];
 
     //untuk mengambil text value dari inputan (Combobox)
-    TextEditingController FleetDropdownController = new TextEditingController();
+    FormInputController FleetDropdownController = new FormInputController();
 
     //untuk mengambil form data
-    FormInputController formInputController = new FormInputController();
+    FormController formController = new FormController();
 
     return Scaffold(
       appBar: AppBar(
@@ -302,7 +302,7 @@ class MyHomePage extends StatelessWidget {
         margin: EdgeInsets.all(15.0),
         child: FormBuilder(
           context,
-          controller: formInputController,
+          controller: formController,
           autovalidate: true,
           showResetButton: false,
           showSubmitButton: false,
@@ -396,9 +396,9 @@ class MyHomePage extends StatelessWidget {
               label: "Dropdown",
               hint: "Select Option",
               options: [
-                FormBuilderInputOption(value: "Option 1"),
-                FormBuilderInputOption(value: "Option 2"),
-                FormBuilderInputOption(value: "Option 3"),
+                FormBuilderInputOption(label: "test 1", value: "Option 1"),
+                FormBuilderInputOption(label: "test 2", value: "Option 2"),
+                FormBuilderInputOption(label: "test 2", value: "Option 3"),
               ],
               controller: FleetDropdownController
             ),
@@ -514,7 +514,7 @@ class MyHomePage extends StatelessWidget {
           ],
           onChanged: () {
             print("Form value dirubah");
-            print(formInputController.formData);
+            print(FleetDropdownController.getValue);
           },
           onSubmit: (formValue) {
             if (formValue != null) {

@@ -10,7 +10,7 @@ import './chips_input.dart';
 
 //TODO: Refactor this spaghetti code
 class FormBuilder extends StatefulWidget {
-  final FormInputController controller;
+  final FormController controller;
   final BuildContext context;
   final VoidCallback onChanged;
   final WillPopCallback onWillPop;
@@ -272,8 +272,8 @@ class _FormBuilderState extends State<FormBuilder> {
                         formControls[count].value = value;
                         UpdateController(formControl.attribute,value);
                         if (formControl.controller != null)
-                          formControl.controller.text =
-                              formControls[count].value.toString();
+                          formControl.controller.setValue =
+                              formControls[count].value;
                       });
                       field.didChange(value);
                     },
